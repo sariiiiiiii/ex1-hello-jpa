@@ -41,7 +41,8 @@ public class JpaMain {
             */
 
             /* DELETE
-            em.remove();
+            Member member = em.find(Member.class, 1L);
+            em.remove(member);
             */
 
 
@@ -49,15 +50,16 @@ public class JpaMain {
             /* 트랜잭션을 COMMIT하는 시점에 변경된 데이터가 있으면 UPDATE 쿼리를 */
             /* 보낸 후 COMMIT 실행 !! (따로 UPDATE 쿼리를 안보내도 된다!!) */
             /*Member findMember = em.find(Member.class, 1L);
-            findMember.setName("helloJPA");*/
+            findMember.setName("helloJPA"); 더티체킹 */
 
             /* Member객체를 대상으로 query를 한다 (Table 대상이 아닌) */
             /* JPQL은 객체를 대상으로 하는 객체QUERY */
             /* DB에 검색조건 query를 날리면 결국 DB에 종속이 되어버리기 때문에 */
             /* Entity 객체를 대상으로 query를 할 수 있는 JPQL이 제공된다 (SQL을 추상화한 객체지향 쿼리언어(JPQL)) */
+            /* JPQL은 무조건 query가 실행될 때 flush가 일어난다 (자동flush = 그래서 commit이 일어나지 않았는데 조회가 된다) */
             List<Member> result = em.createQuery("select m from Member as m", Member.class).getResultList();
             for(Member member : result){
-                System.out.println(member.getName());
+                System.out.println(member);
             }
 
 
