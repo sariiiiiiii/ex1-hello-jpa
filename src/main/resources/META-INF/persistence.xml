@@ -23,7 +23,7 @@
             <property name="hibernate.format_sql" value="true"/> <!-- formating query 예쁘게 보여주기 -->
             <property name="hibernate.use_sql_comments" value="true"/> <!-- query가 왜 나온거야(사용자가 insert했다, JPA가 insert했다를 주석으로 표기) -->
             <property name="hibernate.jdbc.batch_size" value="10"/> <!-- (버퍼링)SQL문을 VALUE의 SIZE만큼 모아서 한번에 보내기 -->
-            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
             <!-- 애플리케이션이 돌아갈 때 기존의 테이블이 있었으면 DROP하고 table 자동 CREATE -->
             <!-- create말고 create-drop등 다양한 기능이 있으면 참고서를 확인해보자 -->
             <!-- database 방언에 따라서 DDL 명령어도 달라진다 -->

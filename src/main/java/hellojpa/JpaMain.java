@@ -62,6 +62,15 @@ public class JpaMain {
                 System.out.println(member);
             }
 
+            Member member = new Member();
+            member.setId(2L);
+            member.setUsername("B");
+            member.setRoleType(RoleType.ADMIN);
+
+
+
+            em.persist(member);
+
 
             tx.commit(); /* 종료 */
         }catch(Exception e){
