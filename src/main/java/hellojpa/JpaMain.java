@@ -61,6 +61,7 @@ public class JpaMain {
                 System.out.println("m = " + m.getUsername());
             }
 
+            // commit되는 시점에 flush도 됨
             et.commit();
 
         } catch (Exception e) {
