@@ -49,4 +49,18 @@ public class Member {
     public void setTeam(Team team) {
         this.team = team;
     }
+
+    /**
+     *  라이브러리를 이용한 무한루프 경우
+     *  member에 toString생성할 경우 team.toString을 호출한다(team에서 toString을 생성했을 경우)
+     *  양쪽으로 계속 호출하기 때문에 stackOverFlow 발생
+     */
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", team=" + team +
+                '}';
+    }
 }
