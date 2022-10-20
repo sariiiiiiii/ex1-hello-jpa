@@ -1,30 +1,31 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Member {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    /**
+     * 회원같은 경우 회원은 회원에서 끊어야 한다
+     * 회원이 주문한 목록을 보고 싶으면 Order의 외래키 member_id로 조회를 하지 member에서 List<Order> 로 보통 조회하지 않기 때문
+     */
+
+    @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name = "USERNAME")
-    private String username;
+    private String name;
 
-//        @Column(name = "TEAM_ID")
-//        private Long teamId;
+    private String city;
 
-    /**
-     * ManyToOne(다 쪽이) 연관관계의 주인이 되는걸 약속하자 (DB의 테이블에서 N쪽인 것이 연관관계의 주인)
-     */
-    // OWNER (연관관계의 주인)
-    // 객체의 Team객체와 DB의 TEAM_ID(PK)를 매핑
-    @ManyToOne // Member 입장에서는 many이고 Team 입장에서는 One이기 때문에 ManyToOne
-    // join을 해야 되는 컬럼이 뭐냐
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
+    private String street;
+
+    private String zipcode;
+
+    @OneToMany(mappedBy = "member") // 연관관계의 주인은 외래키로 걸려있는 Order Entity에 Member이기 때문에 mappedBy = member
+    private List<Order> orders = new ArrayList<>(); // JPA hibernate 관례상 리스트 초기화
 
     public Long getId() {
         return id;
@@ -34,33 +35,43 @@ public class Member {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Team getTeam() {
-        return team;
+    public String getCity() {
+        return city;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    /**
-     *  라이브러리를 이용한 무한루프 경우
-     *  member에 toString생성할 경우 team.toString을 호출한다(team에서 toString을 생성했을 경우)
-     *  양쪽으로 계속 호출하기 때문에 stackOverFlow 발생
-     */
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", team=" + team +
-                '}';
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }
