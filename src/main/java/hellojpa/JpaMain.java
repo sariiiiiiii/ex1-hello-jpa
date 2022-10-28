@@ -9,7 +9,7 @@ import java.util.List;
 public class JpaMain {
     public static void main(String[] args) {
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("test");
 
         EntityManager em = emf.createEntityManager();
 
@@ -18,25 +18,41 @@ public class JpaMain {
 
         try {
 
-            // 양방향 연관관계 예제
-            // Order의 orderItems list를 한 코드
-            Order order = new Order();
-            order.addOrderItem(new OrderItem());
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbbb");
+            movie.setName("바람과함께사라지다");
+            movie.setPrice(10000);
 
-            /**
-             * Order에 orderItems list를 안한 코드
-             * 양방향 연관관계가 아니더라도 application 개발하는데 아무 문제 없다
-             * 단방향 연관관계만 해도 application 커멘더성은 다 개발할 수 있다
-             * 양방향 연관관계를 만드는이유는 개발상 편의랑 조회를 위해
-             * Order를 조회했을 때 OrderItem을 다 조회하고 싶어 할 때 사용(JPQL)
-             * 할 수 있으면 최대한 단방향으로 하자
-             */
-            Order order2 = new Order();
-            em.persist(order2);
+            Album album = new Album();
+            album.setArtist("김광석");
+            album.setName("가을하늘");
+            album.setPrice(5000);
 
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order2);
-            em.persist(orderItem);
+            Book book = new Book();
+            book.setAuthor("홍길동");
+            book.setIsbn("abcd");
+            book.setName("나의라임오렌지나무");
+            book.setPrice(12000);
+
+            em.persist(movie);
+            em.persist(album);
+            em.persist(book);
+
+            System.out.println("movie.getId = " + movie.getId());
+
+            em.flush();
+            em.clear();
+
+            System.out.println("movie.getId2 = " + movie.getId());
+
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            Album findAlbum = em.find(Album.class, album.getId());
+            Book findBook = em.find(Book.class, book.getId());
+
+            System.out.println("findMovie = " + findMovie);
+            System.out.println("findAlbum = " + findAlbum);
+            System.out.println("findBook = " + findBook);
 
             tx.commit();
         } catch (Exception e) {
