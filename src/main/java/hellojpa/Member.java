@@ -1,6 +1,8 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Member {
@@ -25,6 +27,33 @@ public class Member {
     // join을 해야 되는 컬럼이 뭐냐
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    // 일대일[1:1] 매핑 (연관관계의 주인)
+    // 대상 테이블에 왜래키가 있는 단방향 매핑은 JPA에서 지원 X (양방향 관계는 지원)
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+
+    // ============================= [ N : M ] ======================================
+    // @JoinTable로 table 생성
+    // PK가 JOINTABLE로 FK로 변환되서 insert
+
+//    @ManyToMany
+//    @JoinTable(name = "MEMBER_PRODUCT")
+//    private List<Product> products = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberProduct> memberProducts = new ArrayList<>();
+
+    // ===============================================================================
+
+    /**
+     * 1:N 일 때 Member에서 Team 조회(단순 조회) 공식적으로 존재 X
+     * @ManytoOne
+     * @JoinColumn(name = "TEAM_ID", insertTable = false, updateTable = false)
+     * private Team team
+     * 결론은 다대일 양방향을 사용하자 (객체적으로 좀더 손해를 보긴 하긴 하지만 사용 !!)
+     */
 
     public Long getId() {
         return id;
