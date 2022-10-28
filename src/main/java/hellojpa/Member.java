@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
     /**
      * 회원같은 경우 회원은 회원에서 끊어야 한다
