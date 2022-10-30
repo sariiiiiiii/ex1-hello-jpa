@@ -27,5 +27,4 @@ public class ValueMain {
         System.out.println("numB = " + numB);
 
     }
-
 }
