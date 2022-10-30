@@ -20,6 +20,7 @@ public class JpaMain {
 
             /**
              * 지연로딩 LAZY
+             * 필요시 컨트롤할 때 반환받는 객체는 proxy 객체
              */
 
             Team team = new Team();
