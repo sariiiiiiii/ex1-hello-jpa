@@ -1,8 +1,11 @@
 package hellojpa;
 
-import org.hibernate.Hibernate;
-
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import java.awt.*;
+import java.util.List;
 
 public class JpaMain2 {
     public static void main(String[] args) {
@@ -17,43 +20,46 @@ public class JpaMain2 {
         try {
 
             /**
-             * 영속성 컨텍스트의 도움을 받을 수 없는 준영속 상태일 때, 프록시를 초기화하면 문제 발생
-             * Hibernate는 org.hibernate.LazyInitializationException 발생
+             * 즉시로딩 - EAGER
+             * 즉시로딩 주의
+             * 1. 가급적 지연 로딩만 사용(특히 실무에서)
+             * 2. 즉시 로딩을 적용하면 예상치 못한 SQL이 발생(예제로 2개 테이블만 조인되서 그렇지 많아지면 많아질수록 모든게 join 되기 때문에 성능상 이슈)
+             * 3. 즉시 로딩은 JQPL에서 N + 1 문제를 일으킨다
+             * 4. @ManyToOne, @OneToOne은 기본이 즉시 로딩 -> LAZY로 설정
+             * 5. @OneToMany, @ManyToMany는 기본이 지연로딩
              */
 
-            Member member1 = new Member();
-            member1.setName("memberA");
+            Team2 team = new Team2();
+            team.setName("teamA");
+            em.persist(team);
 
-            em.persist(member1);
+            Member2 member = new Member2();
+            member.setName("memberA");
+            member.setTeam2(team);
+
+            em.persist(member);
 
             em.flush();
             em.clear();
+            
+            // EAGER = 즉시로딩은 조회할 때 team까지 함께 조회
+            Member2 m = em.find(Member2.class, member.getId());
 
-            Member refMember = em.getReference(Member.class, member1.getId());
-            System.out.println("refMember = " + refMember.getClass()); // proxy
+            System.out.println("m = " + m.getTeam2().getClass()); // proxy가 아닌 Entity
 
-            // proxy에 초기화 요청은 영속성 컨텍스트를 통해 처리가 되는데 영속성 컨텍스트를 끊게 되면은 ? (detach(), close())
-//            em.detach(refMember);
+            System.out.println("======================================");
+            System.out.println("teamName = " + m.getTeam2().getName()); // Entity에서 값을 가져옴
+            System.out.println("======================================");
 
-            // 영속성 컨텍스트를 끊었기 때문에 catch()문에서 Exception 발생(LazyInitializationException)
-            refMember.getName();// DB query 조회
-
-            /**
-             * proxy 확인 util
-             */
-            // 프록시 인스턴스의 초기화 여부 확인(Entity manager Factory)
-            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
-
-            // 프록시 클래스 확인 방법
-            System.out.println("proxy = " + refMember.getClass());
-
-            // 프록시 강제 초기화(JPA에서는 지원안하고 hibernate에서 지원)
-            Hibernate.initialize(refMember); // 강제 초기화
+            // JPQL에서의 문제점
+            // JPQL은 query를 그대로 sql로 변역을 하는 것이기 때문에 그대로 번역을 하게 되면 member만 조회하게 됨
+            // member를 가지고 와봤더니 Member 도메인에 team이 즉시로딩으로 되어있네 ? 하면서 member의 갯수가 10개면 10개만큼의 team 값을 다시 가져오게 됨 (query 2번 실행)
+            List<Member2> result = em.createQuery("select m from Member m", Member2.class)
+                            .getResultList();
 
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
-            e.printStackTrace();
         } finally {
             em.close();
         }
