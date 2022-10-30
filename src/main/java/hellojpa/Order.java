@@ -1,39 +1,30 @@
 package hellojpa;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
-@Table(name = "ORDERS")
-public class Order extends BaseEntity {
+public class Order {
 
     @Id @GeneratedValue
-    @Column(name = "ORDER_ID")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "MEMBER_ID") // FK 연관관계 매핑
-    private Member member;
+    private String name;
 
-    // 1 : 1 mapping
-    @OneToOne
-    @JoinColumn(name = "DELIVERY_ID")
-    private Delivery delivery;
-
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
-
-    private LocalDateTime orderDate;
-
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
-
-    // 양방향 연관관계 편의메소드 설정
-    public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
-        orderItem.setOrder(this);
+    public Long getId() {
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

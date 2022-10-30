@@ -1,31 +1,19 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-public class Member extends BaseEntity {
-
-    /**
-     * 회원같은 경우 회원은 회원에서 끊어야 한다
-     * 회원이 주문한 목록을 보고 싶으면 Order의 외래키 member_id로 조회를 하지 member에서 List<Order> 로 보통 조회하지 않기 때문
-     */
+public class Member {
 
     @Id @GeneratedValue
-    @Column(name = "MEMBER_ID")
     private Long id;
 
     private String name;
 
-    private String city;
-
-    private String street;
-
-    private String zipcode;
-
-    @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<>();
+    // FetchType.LAZY = proxy 객체로 조회
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
     public Long getId() {
         return id;
@@ -43,35 +31,11 @@ public class Member extends BaseEntity {
         this.name = name;
     }
 
-    public String getCity() {
-        return city;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
