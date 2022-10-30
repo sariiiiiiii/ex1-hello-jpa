@@ -3,17 +3,17 @@ package hellojpa;
 import javax.persistence.*;
 
 @Entity
-public class Member {
+public class Member2 {
 
     @Id @GeneratedValue
     private Long id;
 
     private String name;
 
-    // FetchType.LAZY = proxy 객체로 조회
-    @ManyToOne(fetch = FetchType.LAZY)
+    // FetchType.EAGER
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TEAM_ID")
-    private Team team;
+    private Team2 team2;
 
     public Long getId() {
         return id;
@@ -31,12 +31,11 @@ public class Member {
         this.name = name;
     }
 
-    public Team getTeam() {
-        return team;
+    public Team2 getTeam2() {
+        return team2;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
-        team.getMembers().add(this);
+    public void setTeam2(Team2 team2) {
+        this.team2 = team2;
     }
 }
