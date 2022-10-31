@@ -2,7 +2,7 @@
 <persistence version="2.2"
              xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
-    <persistence-unit name="hello"> <!-- JPA를 쓸건데 이름을 무엇을 쓸래? DB가 하나기 때문에 1개(H2) -->
+    <persistence-unit name="hello">
         <properties>
             <!-- 필수 속성 -->
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
@@ -10,25 +10,14 @@
             <property name="javax.persistence.jdbc.password" value=""/>
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/jpashop"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>-->
-            <!-- Hibernate는 40가지 이상의 DB 방언을 쓸 수 있다 -->
-            <!-- JPA는 특정 데이터 베이스에 종속X (MySQL, ORACLE, H2 etc...) -->
-            <!-- MySQL : VARCHAR, ORACLE : VARCHAR2 -->
-            <!-- MySQL : SUBSTRING, ORACLE : SUBSTR -->
-            <!-- 페이징도 다 다르지만 나는 이 DB를 쓸거야 그럼 JPA가 번역해서 쓴다 -->
 
             <!-- 옵션 -->
             <!-- Hibernate 전용 옵션 -->
-            <property name="hibernate.show_sql" value="true"/> <!-- query println 출력 -->
-            <property name="hibernate.format_sql" value="true"/> <!-- formating query 예쁘게 보여주기 -->
-            <property name="hibernate.use_sql_comments" value="true"/> <!-- query가 왜 나온거야(사용자가 insert했다, JPA가 insert했다를 주석으로 표기) -->
-            <property name="hibernate.jdbc.batch_size" value="10"/> <!-- (버퍼링)SQL문을 VALUE의 SIZE만큼 모아서 한번에 보내기 -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+            <property name="hibernate.jdbc.batch_size" value="10"/>
             <property name="hibernate.hbm2ddl.auto" value="create" />
-            <!-- 애플리케이션이 돌아갈 때 기존의 테이블이 있었으면 DROP하고 table 자동 CREATE -->
-            <!-- create말고 create-drop등 다양한 기능이 있으면 참고서를 확인해보자 -->
-            <!-- database 방언에 따라서 DDL 명령어도 달라진다 -->
-            <!-- 개발단계 초기에서는 create 또는 update 테스트 서버(개발중간단계)에서는 update 또는 validate 운영 서버에서는 validate 또는 none  -->
-            <!-- local 서버에서는 자유롭게 쓰되 여러명이서 함께 개발단계에서는 되도록이면 ! 사용하지 말자 -->
         </properties>
     </persistence-unit>
 </persistence>

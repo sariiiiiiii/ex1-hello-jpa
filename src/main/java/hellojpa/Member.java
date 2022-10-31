@@ -23,7 +23,7 @@ public class Member {
     @Column(name = "username")
     private String name;
 
-    // Period(기간)
+    // Period (기간)
     @Embedded
     private Period workPeriod;
 

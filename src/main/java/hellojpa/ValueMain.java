@@ -26,5 +26,13 @@ public class ValueMain {
         System.out.println("numA = " + numA);
         System.out.println("numB = " + numB);
 
+        /**
+         * 객체 타입은 같은 address라는 인스턴스를 바라보고 있기 때문에 값이 변경되면 같이 값이 변경됨
+         */
+        Address address = new Address("city", "street", "zipcode");
+        Address copyAddress = address;
+
+//        address.setCity("newCity");
+
     }
 }
