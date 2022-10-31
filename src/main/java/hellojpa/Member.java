@@ -24,9 +24,6 @@ public class Member {
     private String name;
 
     // Period(기간)
-//    private LocalDateTime startDate;
-//    private LocalDateTime endDate;
-
     @Embedded
     private Period workPeriod;
 
@@ -34,11 +31,7 @@ public class Member {
 //    @Embedded
 //    private Period workPeriod = null;
 
-    // address(주소)
-//    private String city;
-//    private String street;
-//    private String zipcode;
-
+    // address (주소)
     @Embedded
     private Address homeAddress;
 
