@@ -3,6 +3,11 @@ package hellojpa.jpql;
 import javax.persistence.*;
 
 @Entity
+// 관례상 @NamedQuery의 name value값은 Entity명.name으로 사용된다
+@NamedQuery(
+        name = "Member.findbyUsername",
+        query = "select m from Member m where m.username = :username"
+)
 public class Member {
 
     @Id
@@ -13,9 +18,12 @@ public class Member {
 
     private int age;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    @Enumerated(EnumType.STRING)
+    private MemberType type;
 
     public Long getId() {
         return id;
@@ -48,6 +56,14 @@ public class Member {
     public void changeTeam(Team team) {
         this.team = team;
         team.getMembers().add(this);
+    }
+
+    public MemberType getType() {
+        return type;
+    }
+
+    public void setType(MemberType type) {
+        this.type = type;
     }
 
     @Override

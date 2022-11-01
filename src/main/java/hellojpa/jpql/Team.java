@@ -1,5 +1,7 @@
 package hellojpa.jpql;
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,6 +18,9 @@ public class Team {
 
     private String name;
 
+    // 100이하의 값중에 어느정도 크게 적당히
+    // @BatchSize는 LAZY로딩 때 query문에 in 으로 size만큼 넘기는 것
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
 

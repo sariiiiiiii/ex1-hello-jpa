@@ -52,7 +52,7 @@ public class ProjectionMain {
             fineMember.setAge(20); // 값 변경시 update문 query문이 나감 즉슨, resultList는 영속성 콘텍스트에 의해 관리가 됨
 
             // 임베디드 프로젝션
-            // 임베디드 프로젝션 개별의 Entity가 아니고 Entity에 소속되어 있기 때문에 "select a from Address as a" 이렇게 접근이 불가능
+            // 임베디드 프로젝션 개별의 Entity가 아니고 Entity에 소속되어 있기 때문에 "select a from Address a" 이렇게 접근이 불가능
             List<Address> addressList = em.createQuery("select o.address from Order o", Address.class)
                     .getResultList();
 
